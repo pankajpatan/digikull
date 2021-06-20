@@ -30,7 +30,7 @@ const Grades = () => {
 
 
     const submitHandler = async (e) => {
-     
+        e.preventDefault()
         const formData = new FormData()
 
         formData.append('myfile', file)
