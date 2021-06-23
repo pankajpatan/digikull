@@ -32,7 +32,8 @@ export default function Createbatch() {
 
     },[])
 
-    const submitHandler = () =>{
+    const submitHandler = (e) =>{
+        e.preventDefault()
         const {token}  = userInfo
         const config = {
           headers: {

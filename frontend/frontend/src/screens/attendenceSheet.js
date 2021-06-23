@@ -8,8 +8,7 @@ const AttendenceSheet = (props) => {
   <thead>
     <tr>
       
-      
-      <th>Meeting start time</th>
+      <th>Meeting Title</th>
       <th>Join Time</th>
       <th>Leave Time</th>
       <th>Duration</th>
@@ -21,8 +20,8 @@ const AttendenceSheet = (props) => {
         return (
             <tr>
                
-                <td>
-                    {item.meeting_start_time}
+               <td>
+                    {item.meeting_title}
                 </td>
                 <td>
                     {item.join_time}

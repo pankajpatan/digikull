@@ -18,6 +18,7 @@ class Student(models.Model):
 
 
 class Grades(models.Model):
+    title = models.CharField(max_length=200,blank=True,null=True)
     marks = models.DecimalField(max_digits=7,decimal_places=2,blank=True,null=True)
     points = models.DecimalField(max_digits=7,decimal_places=2,blank=True,null=True)
     feedback = models.CharField(max_length=200,null=True,blank=True)
@@ -25,7 +26,7 @@ class Grades(models.Model):
     student =models.ForeignKey(Student,on_delete=models.SET_NULL,null=True)
 
 class Attendence(models.Model):
-    
+    meeting_title = models.CharField(max_length=200,blank=True,null=True)
     leave_time = models.DateTimeField(auto_now_add=False,null=True,blank=True)
     join_time = models.DateTimeField(auto_now_add=False,null=True,blank=True)
     duration = models.CharField(max_length=200,null=True,blank=True)

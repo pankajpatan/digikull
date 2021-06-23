@@ -2,7 +2,7 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Navbar, Nav, Container, Row, NavDropdown } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
-
+import {useHistory} from 'react-router-dom'
 import { logout } from '../actions/userActions'
 
 
@@ -13,10 +13,10 @@ function Header(props) {
     const { userInfo } = userLogin
 
     const dispatch = useDispatch()
-
+    const history = useHistory()
     const logoutHandler = () => {
         dispatch(logout())
-        
+        history.push('/')
     }
 
     return (
@@ -38,20 +38,7 @@ function Header(props) {
                             </LinkContainer>
                             )}
                             
-                            {userInfo &&  !userInfo.isAdmin && (
-                                <LinkContainer to='/uploadgrade'>
-                                <Nav.Link >Upload Grades</Nav.Link>
-                            </LinkContainer>
-                            )}
-
-                              {userInfo &&  !userInfo.isAdmin && (
-                                <LinkContainer to='/attendence'>
-                                <Nav.Link >Upload Attendence</Nav.Link>
-                            </LinkContainer>
-                            )}
-
-
-
+                          
                             {userInfo ? (
                                 <NavDropdown title={userInfo.name} id='username'>
 

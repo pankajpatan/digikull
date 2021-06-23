@@ -1,6 +1,7 @@
 import React, { useState, useEffect  } from 'react';
 import {useSelector} from 'react-redux'
 import { Modal, Button ,Form} from "react-bootstrap";
+import {useHistory} from 'react-router-dom'
 
 import axios from 'axios'
 export default function UpdateBatch(props) {
@@ -18,7 +19,7 @@ export default function UpdateBatch(props) {
 
     const userLogin = useSelector(state => state.userLogin)
     const { error, loading, userInfo } = userLogin
-
+    const history = useHistory()
     const data ={
         name : name ,
         class_cordinator : classCordinator
@@ -40,7 +41,8 @@ export default function UpdateBatch(props) {
 
     },[])
 
-    const submitHandler = () =>{
+    const submitHandler = (e) =>{
+        e.preventDefault()
         const {token}  = userInfo
         const config = {
           headers: {
@@ -49,6 +51,7 @@ export default function UpdateBatch(props) {
           }
       }
         axios.put(`api/batch/batch_update/${id}/`,data,config).then(res=>setresponse(res)).catch(err=>console.log(err))
+
     }
 
     return (

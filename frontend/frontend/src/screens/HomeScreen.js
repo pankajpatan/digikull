@@ -36,7 +36,7 @@ const HomeScreen = () => {
       <Row>
         {batch.map(item => (
           <Col key={item._id} sm={12} md={6} lg={4} xl={3}>
-            <Card style={{ width: '18rem' }}>
+           <Link to={`studentlist/${item._id}`}>   <Card style={{ width: '18rem' }}>
               <Card.Body>
                 <Card.Title>{item.name}</Card.Title>
                 {user.filter(elem => elem._id == item.class_cordinator).map(item => {
@@ -50,7 +50,7 @@ const HomeScreen = () => {
                 <Link style={{ marginRight: "10px" }} to={`studentlist/${item._id}`} > Students </Link>
                 {userInfo && userInfo.isAdmin && <Link to={`updatebatch/${item._id}`} > Update </Link>}
               </Card.Body>
-            </Card>
+            </Card></Link>
           </Col>
         ))}
       </Row>

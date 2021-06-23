@@ -3,10 +3,10 @@ import { Modal, Button ,Form} from "react-bootstrap";
 import { useSelector } from 'react-redux';
 import axios from 'axios'
 import Loader from '../component/loader'
-const Attendence = () => {
+const Attendence = (props) => {
     const [show, setShow] = useState(false);
-    const [batch, setbatch] = useState(null);
-    const [fetch,setfetch] = useState([])
+    const [err, seterr] = useState(false);
+
     const [file,setfile] = useState(null)
     const [uploading,setUploading] = useState(false)
     const handleClose = () => setShow(false);
@@ -15,18 +15,9 @@ const Attendence = () => {
     const userLogin = useSelector(state => state.userLogin)
     const { error, loading, userInfo } = userLogin
 
-    console.log(batch,'batch')
-    useEffect(()=>{
-        
-    const { token } = userInfo
-    const config = {
-        headers: {
-            'Content-type': 'application/json',
-            'Authorization': `Bearer ${token}`
-        }
-    }
-    axios.get('api/batch/get_batches',config).then(res=>setfetch(res.data)).catch(err=>console.log(err))
-    },[])
+    const {id} = props.match.params
+
+  
 
 
     const submitHandler = async (e) => {
@@ -34,7 +25,7 @@ const Attendence = () => {
         const formData = new FormData()
 
         formData.append('myfile', file)
-        formData.append('batch', batch)
+   
 
         setUploading(true)
         const { token } = userInfo
@@ -46,7 +37,7 @@ const Attendence = () => {
                 }
             }
 
-            const { data } = await axios.post('/api/student/upload_attendence/', formData, config)
+            const { data } = await axios.post(`/api/student/upload_attendence/${id}/`, formData, config)
 
             console.log(data)
             
@@ -54,6 +45,7 @@ const Attendence = () => {
 
         } catch (error) {
             setUploading(false)
+            seterr(true)
         }
     }
 
@@ -65,6 +57,7 @@ const Attendence = () => {
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>Attendence Upload</Modal.Title>
+                    {err && <p>Something Went Wrong!!</p>}
                 </Modal.Header>
                 <Modal.Body>
               
@@ -82,23 +75,6 @@ const Attendence = () => {
                                 </Form.File>
                                 {uploading && <Loader />}
 
-                            <Form.Group controlId='batch'>
-                                <Form.Label>class cordinator</Form.Label>
-                                <Form.Control
-                                    as="select"
-                                    value={batch}
-                                    name = "batch"
-                                    onChange={(e) => setbatch(e.target.value)}
-                                >
-                                    {fetch.map(x => {
-                                        return (
-                                            <option value={x._id} >
-                                                {x.name}
-                                            </option>
-                                        )
-                                    })}
-                                </Form.Control>
-                            </Form.Group>
 
                             <Button type='submit' variant='primary'>
                                 Update

@@ -7,6 +7,7 @@ import axios from 'axios'
 const StudentList = (props) => {
     const [student, setstudent] = useState([])
     const { id } = props.match.params
+
     const userLogin = useSelector(state => state.userLogin)
     const { error, loading, userInfo } = userLogin
 
@@ -24,6 +25,10 @@ const StudentList = (props) => {
         axios.get(`api/student/get_students/${id}/`, config).then(res => setstudent(res.data)).catch(err => console.log(err))
     }, [])
     return (<div>
+        <div style={{display:'flex',flexDirection: 'row-reverse'}} >
+           {userInfo && !userInfo.isAdmin && <Link to={`/attendence/${id}`}> <span>Upload Attendence</span> </Link>}
+           {userInfo && !userInfo.isAdmin && <Link style={{marginRight:'40px'}} to={`/uploadgrade/${id}`} ><span>Upload Grades</span></Link>}
+        </div>
         <Table striped bordered hover>
             <thead>
                 <tr>

@@ -25,8 +25,8 @@ function App() {
           <Route path='/register' component={RegisterScreen} />
           <Route path='/createbatch' component={Createbatch} />
           <Route path='/updatebatch/:id' component={UpdateBatch} />
-          <Route path='/uploadgrade' component={Grades} />
-          <Route path='/attendence' component={Attendence} />
+          <Route path='/uploadgrade/:id' component={Grades} />
+          <Route path='/attendence/:id' component={Attendence} />
           {/* <Route path='/asheetupload' component={Attendence} /> */}
           <Route path='/studentlist/:id' component={StudentList} />
           <Route path='/studentdetails/:id' component={StudentDetails} />

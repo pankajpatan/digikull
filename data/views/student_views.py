@@ -16,9 +16,9 @@ from decimal import Decimal
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
-def upload_attendence(request):
+def upload_attendence(request,pk):
     data = request.data
-    batch = Batch.objects.get(_id=data['batch'])
+    batch = Batch.objects.get(_id=pk)
     file = request.FILES.get('myfile')
     fs = FileSystemStorage()
     filename = fs.save(file.name, file)
@@ -44,6 +44,7 @@ def upload_attendence(request):
                 
             
                 attendence , created = Attendence.objects.get_or_create(
+                        meeting_title = l[4][1],
                         join_time = datetime.strptime(l[i][1],"%m/%d/%Y, %H:%M:%S %p"),
                         leave_time = datetime.strptime(l[i][2],"%m/%d/%Y, %H:%M:%S %p"),
                         duration = l[i][3],
@@ -55,43 +56,45 @@ def upload_attendence(request):
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
-def upload_grades(request):
+def upload_grades(request,pk):
     data = request.data
-    batch = Batch.objects.get(_id=data['batch'])
+    batch = Batch.objects.get(_id=pk)
     file =data['myfile']
     fs = FileSystemStorage()
     filename = fs.save(file.name,file)
     uploaded_file_path = fs.path(filename)
     with open(uploaded_file_path) as f:
         reader = csv.reader((line.replace('\0','') for line in f), delimiter = ',')
-        for row in reader:
-            if row[2].startswith('DK'):
-
+        l = list(reader)
+        for i in range(len(l)):
+            if l[i][2].startswith('DK'):
                 try :
                     student,created = Student.objects.get_or_create(
-                    name = row[0],
-                    email = row[2],
+                    name = l[i][0],
+                    email = l[i][2],
                     batch =batch
                 )
                 except :
                     return response("something wrong with data",status=status.HTTP_400_BAD_REQUEST)
+                
+              
 
                
-                for i in range(3,len(row),3):
-                      if row[2].startswith('DK'):
+                for j in range(3,len(l[i]),3):
+                      if l[i][2].startswith('DK'):
                           
 
                     # try: 
 
                             grades,created = Grades.objects.get_or_create(
-                             
-                                feedback = row[i+2],
+                                title = l[0][j],
+                                feedback = l[i][j+2],
                                 student = student
                             )
-                            if row[i] != '':
-                                grades.marks = float(row[i])
-                            if row[i+1] != '':
-                                grades.points = float(row[i+1])
+                            if l[i][j] != '':
+                                grades.marks = float(l[i][j])
+                            if l[i][j+1] != '':
+                                grades.points = float(l[i][j+1])
                             grades.save()
 
 
@@ -119,7 +122,7 @@ def get_students(request,pk):
         attend = len(a)
         session = Session.objects.all()
         total_sessions = len(session)
-        percent = (attend/250)*total_sessions
+        percent = (attend/total_sessions)*100
         st.total_class_attended = percent
         st.save()
     serializer = StudentSerializer(student,many=True)

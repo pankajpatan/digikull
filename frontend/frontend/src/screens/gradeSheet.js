@@ -1,10 +1,10 @@
 import {Table} from 'react-bootstrap'
 const GradeSheet = (props) => {
-   const arr =['Tip Calculator','JavaScript Assignment 1','Bootstrap Assignment',
-'Styling First 2 assignment','Dating-Application','Git Assignment','Tribute Page'
-]
+//    const arr =['Tip Calculator','JavaScript Assignment 1','Bootstrap Assignment',
+// 'Styling First 2 assignment','Dating-Application','Git Assignment','Tribute Page'
+// ]
 
-props.grades.forEach((item,ind)=>item["assignment"]=arr[ind])
+// props.grades.forEach((item,ind)=>item["assignment"]=arr[ind])
 
     return ( <div>
                <Table striped bordered hover>
@@ -23,7 +23,7 @@ props.grades.forEach((item,ind)=>item["assignment"]=arr[ind])
         return (
             <tr>
                 <td>
-                   {item.assignment}
+                   {item.title}
                 </td>
                 <td>
                     {item.marks}
